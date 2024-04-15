@@ -1,12 +1,11 @@
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from app.routers import users
 
 app = FastAPI()
 
+from app.routers import users
 app.include_router(users.router)
-
 
 class Item(BaseModel):
     name: str
