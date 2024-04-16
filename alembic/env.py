@@ -57,7 +57,7 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    from app.models.user import Base
+    from app.models2.user import Base
 
     target_metadata = Base.metadata
 

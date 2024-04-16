@@ -5,7 +5,9 @@ from pydantic import BaseModel
 app = FastAPI()
 
 from app.routers import users
+
 app.include_router(users.router)
+
 
 class Item(BaseModel):
     name: str

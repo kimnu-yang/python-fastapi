@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
-from app.models.user import User, Base
+from app.models import User, Base
+from app.common.api import success_response
+import bcrypt
 
 router = APIRouter(
     prefix="/users",
@@ -21,8 +22,9 @@ Base.metadata.create_all(bind=engine)
 
 
 # 사용자 생성 함수
-def create_user(db_session, username: str, email: str):
-    db_user = User(username=username, email=email)
+def create_user(db_session, username: str, email: str, password: str):
+    salt = bcrypt.gensalt()
+    db_user = User(username=username, email=email, password=bcrypt.hashpw(password.encode('utf-8'), salt), salt=salt)
     db_session.add(db_user)
     db_session.commit()
     db_session.refresh(db_user)
@@ -31,11 +33,15 @@ def create_user(db_session, username: str, email: str):
 
 # 사용자 조회 함수
 def get_user(db_session, user_id: int):
-    return db_session.query(User).filter(User.id == user_id).first()
+    user = db_session.query(User).filter(User.id == user_id).first()
+    return user.to_dict()
 
+
+# @router.post("")
+# async def sign_up():
+#     return success_response(create_user(SessionLocal(), "name", "email", "password"))
+#
 
 @router.get("")
 async def read_root():
-    create_user(SessionLocal(), "name", "email")
-    print(get_user(SessionLocal(), 1))
-    return get_user(SessionLocal(), 0)
+    return success_response(get_user(SessionLocal(), 1))
