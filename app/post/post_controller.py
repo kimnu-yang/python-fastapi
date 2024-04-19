@@ -3,8 +3,8 @@ from app.common.api import Api
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from app.post.post_service import get_all_posts, create_post
-from app.post.post_model import PostCreateRequest
+from app.post.post_service import get_all_posts, create_post, get_post, update_post, delete_post
+from app.post.post_model import PostCreateRequest, PostUpdateRequest
 
 router = APIRouter(
     prefix="/posts",
@@ -27,6 +27,21 @@ async def all_post() -> Api:
     return get_all_posts(SessionLocal())
 
 
+@router.get("/{post_id}")
+async def post_detail(post_id: int) -> Api:
+    return get_post(SessionLocal(), post_id)
+
+
 @router.post("")
-async def write_post(request: Request, post: PostCreateRequest) -> Api:
+async def post_write(request: Request, post: PostCreateRequest) -> Api:
     return create_post(request, SessionLocal(), post)
+
+
+@router.patch("/{post_id}")
+async def post_update(request: Request, post_id: int, post: PostUpdateRequest) -> Api:
+    return update_post(request, SessionLocal(), post_id, post)
+
+
+@router.delete("/{post_id}")
+async def post_delete(request: Request, post_id) -> Api:
+    return delete_post(request, SessionLocal(), post_id)

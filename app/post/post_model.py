@@ -34,5 +34,5 @@ class PostCreateRequest(BaseModel):
 
 
 class PostUpdateRequest(BaseModel):
-    title: str
-    content: str
+    title: str = None
+    content: str = None

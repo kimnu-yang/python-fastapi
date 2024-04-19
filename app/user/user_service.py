@@ -53,6 +53,11 @@ def get_user(db_session, user: UserSignInRequest):
         return sign_in_data_not_match()
 
 
+def get_user_by_id(db_session, user_id: int):
+    data = db_session.query(User).filter(User.id == user_id).first()
+    return data.to_dict()
+
+
 # 사용자 정보 갱신
 def user_update(db_session, request: Request, user: UserUpdateRequest):
     token = request.headers.get("authorized-key")
@@ -91,9 +96,9 @@ def token_refresh(request: Request, email: str):
             return jwt_data_not_match()
     elif type(data) is int:
         if data == 1:
-            return invalid_jwt()
-        elif data == 2:
             return expired_jwt()
+        elif data == 2:
+            return invalid_jwt()
         else:
             return undefined_error()
     else:

@@ -11,6 +11,10 @@ def password_rule_violation():
     return Api(status="400", message="Password rule violation", data={})
 
 
+def too_long_title():
+    return Api(status="400", message="Too long title (100 limit)", data={})
+
+
 # 로그인 데이터 불일치
 def sign_in_data_not_match():
     return Api(status="401", message="Email or Password not matching", data={})
@@ -31,8 +35,9 @@ def jwt_data_not_match():
     return Api(status="401", message="JWT data not matching", data={})
 
 
-def too_long_title():
-    return Api(status="401", message="Too long title (100 limit)", data={})
+# 수정/삭제 권한이 없음
+def not_permitted():
+    return Api(status="401", message="delete/update is not permitted", data={})
 
 
 # 일치하는 데이터가 없음
