@@ -31,9 +31,13 @@ def jwt_data_not_match():
     return Api(status="401", message="JWT data not matching", data={})
 
 
+def too_long_title():
+    return Api(status="401", message="Too long title (100 limit)", data={})
+
+
 # 일치하는 데이터가 없음
 def not_found():
-    return Api(status="404", message="Not found", data={})
+    return Api(status="404", message="Data not found", data={})
 
 
 # 정의되지 않은 오류

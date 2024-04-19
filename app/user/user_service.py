@@ -1,7 +1,6 @@
 from fastapi import Request
-from app.user.user_model import User
+from app.user.user_model import User, UserCreateRequest, UserUpdateRequest, UserSignInRequest
 from app.common.api import success_response
-from app.user.user_model import UserCreateRequest, UserUpdateRequest, UserSignInRequest
 from app.common.exception import duplicated_email, password_rule_violation, sign_in_data_not_match, invalid_jwt, \
     expired_jwt, undefined_error, jwt_data_not_match, not_found
 from app.common.jwt import create_tokens, decode_token, create_access_token
@@ -40,7 +39,7 @@ def email_check(db_session, email: str):
 def get_user(db_session, user: UserSignInRequest):
     data = db_session.query(User).filter(User.email == user.email).first()
     if data is not None:
-        if user.password == bcrypt.hashpw(user.password.encode('utf-8'), data.salt):
+        if data.password == bcrypt.hashpw(user.password.encode('utf-8'), data.salt):
             token = create_tokens(data.to_dict())
             return success_response(
                 {

@@ -29,7 +29,7 @@ async def sign_up(user: UserCreateRequest) -> Api:
 
 @router.post("/sing_in")
 async def sign_in(user: UserSignInRequest) -> Api:
-    return get_user(SessionLocal(), user.email, user.password)
+    return get_user(SessionLocal(), user)
 
 
 @router.patch("/update")

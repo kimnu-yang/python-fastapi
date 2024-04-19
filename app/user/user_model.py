@@ -8,10 +8,10 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    email = Column(String, unique=True)
-    password = Column(String)
-    username = Column(String)
-    salt = Column(String)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    salt = Column(String, nullable=False)
 
     def to_dict(self):
         return {
