@@ -32,6 +32,12 @@ class UserSignInRequest(BaseModel):
     password: str
 
 
+class UserUpdateRequest(BaseModel):
+    email: str
+    username: str = None
+    password: str = None
+
+
 class TokenRefreshRequest(BaseModel):
     email: str
     refresh_token: str
