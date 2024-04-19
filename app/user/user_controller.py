@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from app.common.api import Api
-from app.user.user_model import UserCreateRequest, UserSignInRequest, TokenRefreshRequest
+from app.user.user_model import UserCreateRequest, UserSignInRequest
 from app.user.user_service import create_user, get_user, token_refresh
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -33,5 +33,5 @@ async def sign_in(user: UserSignInRequest) -> Api:
 
 
 @router.post("/refresh")
-async def refresh_jwt(token: TokenRefreshRequest) -> Api:
-    return token_refresh(token.email, token.refresh_token)
+async def refresh_jwt(request: Request, email: str) -> Api:
+    return token_refresh(request, email)

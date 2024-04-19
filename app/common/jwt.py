@@ -10,7 +10,7 @@ ACCESS_TOKEN_EXPIRE_DAYS = 1
 
 # Access/Refresh 토큰 생성
 def create_tokens(data: dict) -> dict:
-    to_encode = data.copy()
+    to_encode = {"email": data["email"]}
 
     access_expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     expire = datetime.now(timezone.utc) + access_expires_delta

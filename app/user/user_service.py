@@ -1,8 +1,9 @@
+from fastapi import Request, Header
 from app.user.user_model import User
 from app.common.api import success_response
 from app.common.exception import duplicated_email, password_rule_violation, sign_in_data_not_match, invalid_jwt, \
     expired_jwt, undefined_error, jwt_data_not_match
-from app.common.jwt import create_tokens, decode_token
+from app.common.jwt import create_tokens, decode_token, create_access_token
 import bcrypt
 import re
 
@@ -52,12 +53,11 @@ def get_user(db_session, email: str, password: str):
         return sign_in_data_not_match()
 
 
-def token_refresh(email: str, refresh_token: str):
-    data = decode_token(refresh_token)
-    print(data["email"] == email)
+def token_refresh(request: Request, email: str):
+    data = decode_token(request.headers.get("authorized-key"))
     if type(data) is dict:
         if data["email"] == email:
-            return success_response({"access_token": data})
+            return success_response({"access_token": create_access_token({"email": data["email"]})})
         else:
             return jwt_data_not_match()
     elif type(data) is int:
