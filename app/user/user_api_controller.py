@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from app.common.api import Api
 from app.user.user_model import UserUpdateRequest
-from app.user.user_service import user_update, token_refresh
+from app.user.user_service import user_update, token_refresh, delete_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -30,3 +30,8 @@ async def update_user(request: Request, user: UserUpdateRequest) -> Api:
 @router.post("/refresh")
 async def refresh_jwt(request: Request, email: str) -> Api:
     return token_refresh(request, email)
+
+
+@router.delete("")
+async def withdrawal(request: Request, password: str) -> Api:
+    return delete_user(SessionLocal(), request, password)
