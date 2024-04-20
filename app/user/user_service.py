@@ -1,11 +1,11 @@
 from fastapi import Request
+
+from app.common.function import password_validation
 from app.user.user_model import User, UserCreateRequest, UserUpdateRequest, UserSignInRequest
 from app.common.api import success_response
-from app.common.exception import duplicated_email, password_rule_violation, sign_in_data_not_match, invalid_jwt, \
-    expired_jwt, undefined_error, jwt_data_not_match, not_found
+from app.common.exception import duplicated_email, password_rule_violation, sign_in_data_not_match, jwt_data_not_match, not_found
 from app.common.jwt import create_tokens, decode_token, create_access_token
 import bcrypt
-import re
 
 
 # 사용자 생성
@@ -14,7 +14,7 @@ def create_user(db_session, user: UserCreateRequest):
     if email_check(db_session, user.email):
         return duplicated_email()
     # 비밀번호 규칙 체크
-    if not bool(re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-+=]).{8,}$", user.password)):
+    if not password_validation(user.password):
         return password_rule_violation()
 
     salt = bcrypt.gensalt()
@@ -73,7 +73,7 @@ def user_update(db_session, request: Request, user: UserUpdateRequest):
             if user.username is not None:
                 data.username = user.username
             if user.password is not None:
-                if bool(re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-+=]).{8,}$", user.password)):
+                if password_validation(user.password):
                     salt = bcrypt.gensalt()
                     data.salt = salt
                     data.password = bcrypt.hashpw(user.password.encode("utf-8"), salt)
