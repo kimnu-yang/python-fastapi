@@ -57,12 +57,14 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    from app.user.user_model import User
-    from app.post.post_model import Post
+    from app.models.user_model import User
+    from app.models.post_model import Post
+    from app.models.log_model import Log
 
     target_metadata = [
         User.metadata,
         Post.metadata,
+        Log.metadata
     ]
 
     connectable = engine_from_config(

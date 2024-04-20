@@ -1,1 +1,1 @@
-import app.middleware.jwt_middleware
+from app.middleware import jwt_middleware, log_middleware
