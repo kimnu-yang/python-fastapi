@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 from app.common.api import Api
-from app.user.user_model import UserUpdateRequest
+from app.models.user_model import UserUpdateRequest
 from app.user.user_service import user_update, token_refresh, delete_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

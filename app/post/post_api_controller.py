@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from app.post.post_service import create_post, update_post, delete_post
-from app.post.post_model import PostCreateRequest, PostUpdateRequest
+from app.models.post_model import PostCreateRequest, PostUpdateRequest
 
 router = APIRouter(
     prefix="/api/posts",

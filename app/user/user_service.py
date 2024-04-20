@@ -4,7 +4,7 @@ import uuid
 from fastapi import Request
 
 from app.common.function import password_validation
-from app.user.user_model import User, UserCreateRequest, UserUpdateRequest, UserSignInRequest
+from app.models.user_model import User, UserCreateRequest, UserUpdateRequest, UserSignInRequest
 from app.common.api import success_response
 from app.common.exception import duplicated_email, password_rule_violation, sign_in_data_not_match, jwt_data_not_match, \
     not_found

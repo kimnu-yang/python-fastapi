@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from app.common.api import Api
-from app.user.user_model import UserCreateRequest, UserSignInRequest
+from app.models.user_model import UserCreateRequest, UserSignInRequest
 from app.user.user_service import create_user, get_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

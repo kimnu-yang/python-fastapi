@@ -1,5 +1,5 @@
 from fastapi import Request
-from app.post.post_model import Post, PostCreateRequest, PostUpdateRequest
+from app.models.post_model import Post, PostCreateRequest, PostUpdateRequest
 from app.user.user_service import get_user_by_id
 from app.common.api import success_response
 from app.common.jwt import decode_token
