@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Request
 from app.common.api import Api
-from app.user.user_model import UserCreateRequest, UserSignInRequest, UserUpdateRequest
-from app.user.user_service import create_user, get_user, user_update, token_refresh
+from app.user.user_model import UserCreateRequest, UserSignInRequest
+from app.user.user_service import create_user, get_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 router = APIRouter(
-    prefix="/users",
+    prefix="/open-api/users",
     tags=["users"]
 )
 
@@ -30,15 +30,3 @@ async def sign_up(user: UserCreateRequest) -> Api:
 @router.post("/sing_in")
 async def sign_in(user: UserSignInRequest) -> Api:
     return get_user(SessionLocal(), user)
-
-
-@router.patch("/update")
-async def update_user(request: Request, user: UserUpdateRequest) -> Api:
-    return user_update(SessionLocal(), request, user)
-
-
-@router.post("/refresh")
-async def refresh_jwt(request: Request, email: str) -> Api:
-    return token_refresh(request, email)
-
-

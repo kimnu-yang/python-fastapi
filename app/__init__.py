@@ -1,1 +1,1 @@
-from app import user, common
+from app import user, common, middleware

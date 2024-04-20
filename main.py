@@ -1,10 +1,11 @@
-from typing import Union
 from fastapi import FastAPI
-from pydantic import BaseModel
-
 from app import user, post
+from app.middleware.jwt_middleware import JwtMiddleware
 
 app = FastAPI()
 
-app.include_router(user.user_controller.router)
-app.include_router(post.post_controller.router)
+app.add_middleware(JwtMiddleware)
+app.include_router(user.user_api_controller.router)
+app.include_router(user.user_open_api_controller.router)
+app.include_router(post.post_api_controller.router)
+app.include_router(post.post_open_api_controller.router)

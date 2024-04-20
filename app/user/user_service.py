@@ -18,8 +18,12 @@ def create_user(db_session, user: UserCreateRequest):
         return password_rule_violation()
 
     salt = bcrypt.gensalt()
-    db_user = User(username=user.username, email=user.email, password=bcrypt.hashpw(user.password.encode('utf-8'), salt),
-                   salt=salt)
+    db_user = User(username=user.username,
+                   email=user.email,
+                   password=bcrypt.hashpw(
+                       user.password.encode('utf-8'),
+                       salt
+                   ), salt=salt)
     db_session.add(db_user)
     db_session.commit()
     db_session.refresh(db_user)
@@ -61,8 +65,6 @@ def get_user_by_id(db_session, user_id: int):
 # 사용자 정보 갱신
 def user_update(db_session, request: Request, user: UserUpdateRequest):
     token = request.headers.get("authorized-key")
-    if token is None:
-        return invalid_jwt()
     token_data = decode_token(token)
 
     if token_data["email"] == user.email:
@@ -89,17 +91,7 @@ def user_update(db_session, request: Request, user: UserUpdateRequest):
 
 def token_refresh(request: Request, email: str):
     data = decode_token(request.headers.get("authorized-key"))
-    if type(data) is dict:
-        if data["email"] == email:
-            return success_response({"access_token": create_access_token({"email": data["email"]})})
-        else:
-            return jwt_data_not_match()
-    elif type(data) is int:
-        if data == 1:
-            return expired_jwt()
-        elif data == 2:
-            return invalid_jwt()
-        else:
-            return undefined_error()
+    if data["email"] == email:
+        return success_response({"access_token": create_access_token({"email": data["email"]})})
     else:
-        return undefined_error()
+        return jwt_data_not_match()
