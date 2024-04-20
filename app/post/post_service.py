@@ -8,8 +8,23 @@ from datetime import datetime, timezone
 
 
 # 게시글 목록 조회
-def get_all_posts(db_session):
-    posts = db_session.query(Post).all()
+def get_all_posts(db_session, sort, page, size):
+    offset = (page - 1) * size
+    posts = db_session.query(Post)
+    if sort:
+        if ',' in sort:
+            sort_data = sort.split(',')
+        else:
+            sort_data = [sort]
+
+        if sort_data[0] in ['hits', 'created_at']:
+            if len(sort_data) > 1 and sort_data[1].upper() == "DESC":
+                posts = posts.order_by(getattr(Post, sort_data[0]).desc())
+            else:
+                posts = posts.order_by(getattr(Post, sort_data[0]))
+
+    posts = posts.offset(offset).limit(size).all()
+
     if len(posts) < 1:
         return not_found()
     else:

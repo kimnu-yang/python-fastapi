@@ -22,8 +22,8 @@ declarative_base().metadata.create_all(bind=engine)
 
 
 @router.get("")
-async def all_post() -> Api:
-    return get_all_posts(SessionLocal())
+async def all_post(sort: str = None, page: int = 1, size: int = 10) -> Api:
+    return get_all_posts(SessionLocal(), sort, page, size)
 
 
 @router.get("/{post_id}")
